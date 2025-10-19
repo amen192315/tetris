@@ -146,23 +146,23 @@ export class Game {
     }
 
     movePieceDown() {
-        if (this.topOut) return
+    if (this.topOut) return
 
-        this.activePiece.y += 1;
+    this.activePiece.y += 1;
 
+    if (this.hasCollision()) {
+        this.activePiece.y -= 1
+        this.lockPiece();
+        
+        const clearedlines = this.clearLines();
+        this.updateScore(clearedlines);
+        this.updatePieces();
+        
         if (this.hasCollision()) {
-            const clearedlines = this.clearLines();
-
-            this.activePiece.y -= 1
-            this.lockPiece();
-            this.updateScore(clearedlines);
-            this.updatePieces();
-        }
-
-        if (this.hasCollision()) [
             this.topOut = true
-        ]
+        }
     }
+}
 
     rotatePiece() {
         this.rotateBlocks()
@@ -246,11 +246,9 @@ export class Game {
     }
 
     updateScore(clearedLines) {
-        console.log(this.level)
         if (clearedLines > 0) {
             this.score += Game.points[clearedLines] * (this.level + 1);
             this.lines += clearedLines;
-            console.log(this.score, this.lines, this.level)
         }
     }
 
